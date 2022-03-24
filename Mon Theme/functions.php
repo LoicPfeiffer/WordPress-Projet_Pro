@@ -32,9 +32,12 @@ function my_theme_enqueue_styles()
 {
     // chargement de Bootstrap
     wp_enqueue_style('bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css', []);
+    wp_register_script('bootstrap', "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js", ['popper']);
+    wp_register_script('popper', "https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js");
     wp_enqueue_style('my-theme-main', get_stylesheet_directory_uri() . '/style.css', ['bootstrap']);
     // chargement d'un fichier CSS
     wp_enqueue_style('style', get_stylesheet_directory_uri(), []);
+    wp_enqueue_script('bootstrap');
 }
 add_action('wp_enqueue_scripts', 'my_theme_enqueue_styles');
 
@@ -57,9 +60,27 @@ add_action('wp_enqueue_scripts', 'my_theme_enqueue_script');
  * fonctionnalités du thème
  */
 
-// activation de la fonctionnalité des balises HTML5
-add_theme_support('html5');
-// activation de la fonctionnalité du titre du site
-add_theme_support('title-tag');
-// activation de la fonctionnalité des vignettes
-add_theme_support('post-thumbnails');
+function montheme_support()
+{
+    // activation de la fonctionnalité des balises HTML5
+    add_theme_support('html5');
+    // activation de la fonctionnalité du titre du site
+    add_theme_support('title-tag');
+    // activation de la fonctionnalité des vignettes
+    add_theme_support('post-thumbnails');
+}
+/**
+ * Menu
+ */
+// le premier paramètre est la localisation, le second est la description
+function mytheme_register_nav_menu()
+{
+    register_nav_menus(array(
+        'header' => __('En tête', 'wp_lernumerique_theme'),
+        'footer'  => __('Bas de page', 'wp_lernumerique_theme'),
+    ));
+}
+
+Montheme_support();
+add_action('after_setup_theme', 'mytheme_register_nav_menu', 0);
+/*add_filter('wp_title', 'montheme_title');*/
